@@ -505,6 +505,7 @@
 
       // animate the win
       hasWon = true;
+      boxes[16].css({"background": "url('" + images[0] + "') -540px -405px"});
       requestAnimationFrame(function(timestamp) {
         animateWin(timestamp, Date.now(), 1000);
       });
@@ -528,8 +529,6 @@
         requestAnimationFrame(function(timestamp) {
           animateWin(timestamp, startTime, milliDuration);
         });
-      } else {
-        boxes[16].css({"background": "url('" + images[0] + "') -540px -405px"});
       }
     }
 
