@@ -265,7 +265,6 @@
     ];
 
     var isMoving = false;
-    var moveInterval;
 
     var hasWon = false;
     var winInterval;
@@ -273,6 +272,18 @@
     var boxes = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
 
     var images = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg', '15.jpg'];
+
+
+    window.requestAnimationFrame = window.requestAnimationFrame
+      || window.mozRequestAnimationFrame
+      || window.webkitRequestAnimationFrame
+      || window.msRequestAnimationFrame
+      || function(f){return setTimeout(f, 1000/60)} // simulate calling code 60 
+ 
+    window.cancelAnimationFrame = window.cancelAnimationFrame
+      || window.mozCancelAnimationFrame
+      || function(requestID){clearTimeout(requestID)} //fall back
+
 
     // ON LOAD
     $(document).ready( function() {
@@ -346,7 +357,7 @@
     }
 
     function tap(box) {
-      if (isMoving) {
+      if (isMoving || hasWon) {
         return;
       }
 
@@ -431,24 +442,33 @@
       }
 
       // Animate the movement
-      var dx = (destX - srcX) * 180 / 15;
-      var dy = (destY - srcY) * 135 / 15;
-      var curX = srcX * 180;
-      var curY = srcY * 135;
-      var finalX = destX * 180;
-      var finalY = destY * 135;
-      moveInterval = setInterval(function() {
-        isMoving = true;
-        curX += dx;
-        curY += dy;
-        boxes[box].css({left: curX, top: curY});
-        if (curX == finalX && curY == finalY) {
-          clearInterval(moveInterval);
-          updatePositions();
-          isMoving = false;
-          checkWinner();
-        }
-      }, 2);
+      var startX = srcX * 180;
+      var startY = srcY * 135;
+      var endX = destX * 180;
+      var endY = destY * 135;
+
+      requestAnimationFrame(function(timestamp) {
+        animateMovement(timestamp, Date.now(), 75, boxes[box], startX, startY, endX, endY);
+      });
+    }
+
+    function animateMovement(timestamp, startTime, milliDuration, boxObj, startX, startY, endX, endY) {
+      var timestamp = /*timestamp ||*/ Date.now();
+      var progress = (timestamp - startTime) / milliDuration;
+      progress = Math.min(progress, 1);
+      var curX = startX + (endX - startX) * progress;
+      var curY = startY + (endY - startY) * progress;
+      boxObj.css({left: curX, top: curY});
+
+      if (progress < 1) {
+        requestAnimationFrame(function(timestamp) {
+          animateMovement(timestamp, startTime, milliDuration, boxObj, startX, startY, endX, endY);
+        });
+      } else {
+        updatePositions();
+        isMoving = false;
+        checkWinner();
+      }
     }
 
     function checkWinner() {
@@ -465,30 +485,41 @@
 
       // animate the win
       hasWon = true;
-      var dAlpha = 1 / 150;
-      var alpha = 1;
-      var i;
+      requestAnimationFrame(function(timestamp) {
+        animateWin(timestamp, Date.now(), 1000);
+      });
+    }
 
-      winInterval = setInterval(function() {
-        alpha -= dAlpha;
-        if (alpha >= 0) {
-          for (i = 1; i <= 16; i++) {
-            boxes[i].css({'border-color': 'rgba(0, 0, 0, ' + alpha + ')'});
-          }
-        } else {
-          clearInterval(winInterval);
-          for (i = 1; i <= 16; i++) {
-            boxes[i].html('&nbsp;');
-          }
-          boxes[16].css({"background": "url('" + images[0] + "') -540px -405px"});
+    function animateWin(timestamp, startTime, milliDuration) {
+      var timestamp = /*timestamp ||*/ Date.now();
+      var progress = (timestamp - startTime) / milliDuration;
+      progress = Math.min(progress, 1);
+      var alpha = 1 - progress;
+
+      if (alpha > 0) {
+        for (i = 1; i <= 16; i++) {
+          boxes[i].css({'border-color': 'rgba(0, 0, 0, ' + alpha + ')', 
+                        'color': 'rgba(0, 0, 0, ' + alpha + ')',
+                        'text-shadow': '1px 1px 0px rgba(255, 255, 255, ' + alpha + ')'});
         }
-      }, 2);      
+
+        requestAnimationFrame(function(timestamp) {
+          animateWin(timestamp, startTime, milliDuration);
+        });
+      } else {
+        for (i = 1; i <= 16; i++) {
+          boxes[i].html('&nbsp;');
+        }
+        boxes[16].css({"background": "url('" + images[0] + "') -540px -405px"});
+      }
     }
 
     function resetWinAnimation() {
       var i;
       for (i = 1; i <= 16; i++) {
-            boxes[i].css({'border-color': 'rgba(0, 0, 0, 1)'});
+            boxes[i].css({'border-color': 'rgba(0, 0, 0, 1)',
+                          'color': 'rgba(0, 0, 0, 1)',
+                          'text-shadow': '1px 1px 0px rgba(255, 255, 255, 1)'});
             boxes[i].html(i);
       }
       boxes[16].css({"background-image": "url('blank.gif')"});
