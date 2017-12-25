@@ -217,6 +217,43 @@
       -moz-box-sizing: border-box;
       -webkit-box-sizing: border-box;
     }
+
+    .button {
+      display: inline-block;
+      padding: 15px 25px;
+      font-size: 24px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      outline: none;
+      color: #fff;      
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 9px #999;
+    }
+
+    .button:active {
+      box-shadow: 0 5px #666;
+      transform: translateY(4px);
+    }
+
+    #solveButton {
+      background-color: #4CAF50;
+      float: left;
+    }
+
+    #solveButton:hover { background-color: #3e8e41 }
+
+    #solveButton:active { background-color: #3e8e41; }
+
+    #nextButton {
+      background-color: #990000;
+      float: right;
+    }
+
+    #nextButton:hover { background-color: #660000; }
+
+    #nextButton:active { background-color: #660000; }
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
@@ -235,6 +272,8 @@
 
     var boxes = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
 
+    var images = ['1.jpg', '2.jpg'];
+
     // ON LOAD
     $(document).ready( function() {
       var i;
@@ -242,11 +281,13 @@
         boxes[i] = $("#box" + i);
       }
 
-      initPuzzle(1);
+      shuffle(images);
+
+      initPuzzle(images[0]);
     });  
 
 
-    function initPuzzle(puzzleId) {
+    function initPuzzle() {
 	grid = [
           [1,  2,  3,  4],
           [5,  6,  7,  8],
@@ -256,13 +297,13 @@
 
         isMoving = false;
         hasWon = false;
+        loadImage(images[0]);
 	updatePositions();
 
         // Swap 100 times until most things aren't in their default spot (i.e., is chaotic).
         var i, x, y, direction, foundSwap, chaosCount;
         var curX = 3, curY = 3, destX, destY;
         do {
-          console.log('?');
           for (i = 0; i < 100; i++) {
             foundSwap = false;
             while (!foundSwap) {
@@ -368,6 +409,18 @@
       } 
     }
 
+    function loadImage(puzzleImage) {
+      var x, y, box;
+      for (x = 0; x < 4; x++) {
+        for (y = 0; y < 4; y++) {
+          if (x == 3 && y == 3) continue;
+
+          box = grid[y][x];
+          boxes[box].css({"background-image": "url('" + puzzleImage + "')"});
+        }
+      } 
+    }
+
     function swapBoxes(srcX, srcY, destX, destY, isAnimated) {
       var box = grid[srcY][srcX];
       grid[destY][destX] = box;
@@ -410,8 +463,6 @@
         }
       }
 
-      console.log('---');
-
       // animate the win
       hasWon = true;
       var dAlpha = 1 / 150;
@@ -429,14 +480,64 @@
           for (i = 1; i <= 16; i++) {
             boxes[i].html('&nbsp;');
           }
-          boxes[16].css({"background": "url('1.jpg') -540px -405px"});
+          boxes[16].css({"background": "url('" + images[0] + "') -540px -405px"});
         }
       }, 5);      
+    }
+
+    function resetWinAnimation() {
+      var i;
+      for (i = 1; i <= 16; i++) {
+            boxes[i].css({'border-color': 'rgba(0, 0, 0, 1)'});
+            boxes[i].html(i);
+      }
+      boxes[16].css({"background-image": "url('blank.gif')"});
+    }
+
+    function shuffle(array) {
+        let counter = array.length;
+
+        // While there are elements in the array
+        while (counter > 0) {
+            // Pick a random index
+            let index = Math.floor(Math.random() * counter);
+
+            // Decrease counter by 1
+            counter--;
+
+            // And swap the last element with it
+            let temp = array[counter];
+            array[counter] = array[index];
+            array[index] = temp;
+        }
+
+        return array;
+    }
+
+    function solve() {
+      if (isMoving || hasWon) return;
+
+      grid = [
+          [1,  2,  3,  4],
+          [5,  6,  7,  8],
+          [9,  10, 11, 12],
+          [13, 14, 15, 16]
+        ];
+        updatePositions();
+        checkWinner();
+    }
+
+    function next() {
+      if (isMoving) return;
+
+      images.push(images.shift());
+      initPuzzle();
+      resetWinAnimation();
     }
   </script>
 </head>
 
-<div style="font-size: 200%; text-indent: 5px; text-shadow: 1px 1px 0px white;">
+<div style="font-size: 200%; text-indent: 5px; text-shadow: 1px 1px 0px white; width: 720px; height: 540px;">
   <div id="box1" onmousedown="tap(1)">1</div>
   <div id="box2" onmousedown="tap(2)">2</div>
   <div id="box3" onmousedown="tap(3)">3</div>
@@ -456,4 +557,10 @@
   <div id="box14" onmousedown="tap(14)">14</div>
   <div id="box15" onmousedown="tap(15)">15</div>
   <div id="box16">16</div>  
+</div>
+<div style="font-size: 200%; width: 720px;">
+ <div style="width: 50%; margin:auto; padding-top: 50px;">
+  <span id="solveButton" class="button" onmousedown="solve()">Solve</span>
+  <span id="nextButton" class="button" onmousedown="next()">Next</span>
+ </div>
 </div>
