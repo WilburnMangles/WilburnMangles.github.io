@@ -321,7 +321,7 @@
                 swapBoxes(curX - 1, curY, curX, curY, false);
                 curX--;
                 foundSwap = true;
-              } else if (direction == 0 && curX < 3) { // FROM RIGHT
+              } else if (direction == 3 && curX < 3) { // FROM RIGHT
                 swapBoxes(curX + 1, curY, curX, curY, false);
                 curX++;
                 foundSwap = true;
@@ -448,7 +448,7 @@
           isMoving = false;
           checkWinner();
         }
-      }, 5);
+      }, 2);
     }
 
     function checkWinner() {
@@ -482,7 +482,7 @@
           }
           boxes[16].css({"background": "url('" + images[0] + "') -540px -405px"});
         }
-      }, 5);      
+      }, 2);      
     }
 
     function resetWinAnimation() {
