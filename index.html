@@ -3,10 +3,30 @@
     Merry Christmas!
   </title>
   <style>
+    #gridContainer {
+      font-size: 200%;
+      text-indent: 5px;
+      text-shadow: 1px 1px 0px white;
+      width: 720px;
+      height: 540px;
+    }
+
+    #gridOutline {
+      left: 0;
+      top: 0;
+      position: absolute;
+      border: 4px solid black;
+      width: 720px;
+      height: 540px;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+    }
+
     #box1 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') 0 0;
+      background: url('blank.gif') 0 0;
       position: absolute;
       left: 0;
       top: 0;
@@ -19,7 +39,7 @@
     #box2 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') -180px 0;
+      background: url('blank.gif') -180px 0;
       position: absolute;
       left: 180px;
       top: 0;
@@ -33,7 +53,7 @@
     #box3 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') -360px 0;
+      background: url('blank.gif') -360px 0;
       position: absolute;
       left: 360px;
       top: 0px;
@@ -47,7 +67,7 @@
     #box4 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') -540px 0;
+      background: url('blank.gif') -540px 0;
       position: absolute;
       left: 540px;
       top: 0;
@@ -60,7 +80,7 @@
     #box5 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') 0 -135px;
+      background: url('blank.gif') 0 -135px;
       position: absolute;
       left: 0;
       top: 135px;
@@ -73,7 +93,7 @@
     #box6 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') -180px -135px;
+      background: url('blank.gif') -180px -135px;
       position: absolute;
       left: 180px;
       top: 135px;
@@ -87,7 +107,7 @@
     #box7 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') -360px -135px;
+      background: url('blank.gif') -360px -135px;
       position: absolute;
       left: 360px;
       top: 135px;
@@ -101,7 +121,7 @@
     #box8 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') -540px -135px;
+      background: url('blank.gif') -540px -135px;
       position: absolute;
       left: 540px;
       top: 135px;
@@ -114,7 +134,7 @@
     #box9 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') 0 -270px;
+      background: url('blank.gif') 0 -270px;
       position: absolute;
       left: 0;
       top: 270px;
@@ -127,7 +147,7 @@
     #box10 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') -180px -270px;
+      background: url('blank.gif') -180px -270px;
       position: absolute;
       left: 180px;
       top: 270px;
@@ -141,7 +161,7 @@
     #box11 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') -360px -270px;
+      background: url('blank.gif') -360px -270px;
       position: absolute;
       left: 360px;
       top: 270px;
@@ -155,7 +175,7 @@
     #box12 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') -540px -270px;
+      background: url('blank.gif') -540px -270px;
       position: absolute;
       left: 540px;
       top: 270px;
@@ -168,7 +188,7 @@
     #box13 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') 0 -405px;
+      background: url('blank.gif') 0 -405px;
       position: absolute;
       left: 0;
       top: 405px;
@@ -181,7 +201,7 @@
     #box14 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') -180px -405px;
+      background: url('blank.gif') -180px -405px;
       position: absolute;
       left: 180px;
       top: 405px;
@@ -195,7 +215,7 @@
     #box15 {
       width: 180px;
       height: 135px;
-      background: url('1.jpg') -360px -405px;
+      background: url('blank.gif') -360px -405px;
       position: absolute;
       left: 360px;
       top: 405px;
@@ -502,6 +522,8 @@
                       'text-shadow': '1px 1px 0px rgba(255, 255, 255, ' + alpha + ')'});
       }
 
+      
+
       if (alpha > 0) {
         requestAnimationFrame(function(timestamp) {
           animateWin(timestamp, startTime, milliDuration);
@@ -565,7 +587,7 @@
   </script>
 </head>
 
-<div style="font-size: 200%; text-indent: 5px; text-shadow: 1px 1px 0px white; width: 720px; height: 540px;">
+<div id="gridContainer">
   <div id="box1" onmousedown="tap(1)">1</div>
   <div id="box2" onmousedown="tap(2)">2</div>
   <div id="box3" onmousedown="tap(3)">3</div>
@@ -586,6 +608,7 @@
   <div id="box15" onmousedown="tap(15)">15</div>
   <div id="box16">16</div>
 </div>
+<div id="gridOutline">&nbsp;</div>
 <div style="font-size: 200%; width: 720px;">
  <div style="width: 50%; margin:auto; padding-top: 50px;">
   <span id="solveButton" class="button" onmousedown="solve()">Solve</span>
