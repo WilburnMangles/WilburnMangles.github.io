@@ -431,11 +431,15 @@
     }
 
     function updatePositions() {
-      var x, y, box;
+      var x, y, box, style;
       for (x = 0; x < 4; x++) {
         for (y = 0; y < 4; y++) {
+          style = 'solid';
+          if (isBox16(x, y - 1) || isBox16(x, y + 1) || isBox16(x - 1, y) || isBox16(x + 1, y)) {
+            style = 'dashed';
+          }
           box = grid[y][x];
-          boxes[box].css({left: 180 * x, top: 135 * y});
+          boxes[box].css({'left': 180 * x, 'top': 135 * y, 'border-style': style});
         }
       } 
     }
