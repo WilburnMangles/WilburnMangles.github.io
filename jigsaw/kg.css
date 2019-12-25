@@ -1,0 +1,110 @@
+#controls  {position: absolute; top: 640px; left: 0px;}
+
+input      {margin: 0 20px;
+            padding: 1em;
+            border: none;
+            text-decoration: none;
+            font-weight: 700;
+            color: white;
+            } 
+
+
+div.grid   {position: absolute; width: 142px; height: 106px;
+            border: 1px solid rgb(212,212,212); background-color: white; }
+div.pieces {position: absolute; width: 142px; height: 106px;
+            border: 1px solid rgb(212,212,212); }
+
+#grid0, #grid1, #grid2, #grid3, #grid4,
+#piece0, #piece1, #piece2, #piece3, #piece4
+           {top: 50px}
+
+#grid5, #grid6, #grid7, #grid8, #grid9,
+#piece5, #piece6, #piece7, #piece8, #piece9
+           {top: 158px}
+
+#grid10, #grid11, #grid12, #grid13, #grid14,
+#piece10, #piece11, #piece12, #piece13, #piece14
+           {top: 266px}
+
+#grid15, #grid16, #grid17, #grid18, #grid19,
+#piece15, #piece16, #piece17, #piece18, #piece19
+           {top: 374px}
+
+#grid20, #grid21, #grid22, #grid23, #grid24,
+#piece20, #piece21, #piece22, #piece23, #piece24
+           {top: 482px}
+
+#grid0, #grid5, #grid10, #grid15, #grid20 
+           {left: 50px}
+#piece0, #piece5, #piece10, #piece15, #piece20 
+           {left: 800px}
+
+#grid1, #grid6, #grid11, #grid16, #grid21 
+           {left: 194px}
+#piece1, #piece6, #piece11, #piece16, #piece21 
+           {left: 944px}
+
+#grid2, #grid7, #grid12, #grid17, #grid22 
+           {left: 338px}
+#piece2, #piece7, #piece12, #piece17, #piece22 
+           {left: 1088px}
+
+#grid3, #grid8, #grid13, #grid18, #grid23 
+           {left: 482px}
+#piece3, #piece8, #piece13, #piece18, #piece23 
+           {left: 1232px}
+
+#grid4, #grid9, #grid14, #grid19, #grid24 
+           {left: 626px}
+#piece4, #piece9, #piece14, #piece19, #piece24 
+           {left: 1376px}
+		   
+
+input[type=button] {
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;      
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+input[type=button]:active {
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#solve {
+	background-color: #4CAF50;
+	position: relative;
+	left: 100px;
+}
+
+#solve:hover, #solve:active {
+	background-color: #3e8e41;
+}
+
+#jumble {
+	background-color: #990000;
+	position: relative;
+	left: 1076px;
+}
+
+#jumble:hover, #jumble:active {
+	background-color: #660000;
+}
+
+#next {
+	background-color: #000099;
+	position: relative;
+	left: 350px;
+}
+
+#next:hover, #next:active {
+	background-color: #000066;
+}
