@@ -9,6 +9,11 @@ input      {margin: 0 20px;
             } 
 
 
+.selectedPiece {
+	border: 3px solid red !important;
+	z-index: 1 !important;
+}
+
 div.grid   {position: absolute; width: 142px; height: 106px;
             border: 1px solid rgb(212,212,212); background-color: white; }
 div.pieces {position: absolute; width: 142px; height: 106px;

@@ -109,6 +109,8 @@ var hoverGrid = null;
 
 var selectedImage = 16;
 var TOTAL_IMAGES = 16;
+var gridStartPos = new Array();
+var pieceStartPos = new Array();
 
 window.onload = init;
 
@@ -128,7 +130,12 @@ function getPieceCssUrl(pieceNumber) {
 function solveIt() {
    for (var i = 0; i < grids.length; i++) {
       pieces[i].style.backgroundImage = "";
+	  pieces[i].style.left = pieceStartPos[i].left;
+	  pieces[i].style.top = pieceStartPos[i].top;
+	  
       grids[i].style.backgroundImage = getPieceCssUrl(i);
+	  grids[i].style.left = gridStartPos[i].left;
+	  grids[i].style.top = gridStartPos[i].top;
    }
 }
 
@@ -175,6 +182,8 @@ function init() {
       pieces[i].style.height  =  getStyle(pieces[i],"height");
 
       pieces[i].style.cursor = "pointer";
+	  
+	  pieceStartPos.push({left: pieces[i].style.left, top: pieces[i].style.top});
 
       addEvent(pieces[i], "mousedown", mouseGrab, false);
    }
@@ -184,6 +193,10 @@ function init() {
       grids[i].style.left  =  getStyle(grids[i],"left");
       grids[i].style.width  =  getStyle(grids[i],"width");
       grids[i].style.height  =  getStyle(grids[i],"height");
+	  
+	  gridStartPos.push({left: grids[i].style.left, top: grids[i].style.top});
+	  
+	  addEvent(grids[i], "mousedown", mouseGrab, false);
 }
    document.onkeydown  =  keyGrab;
    keyPiece  =  pieces[0];
@@ -245,13 +258,37 @@ function highlightGrid(object) {
 }
 }
 
+function swapPieces(first, second) {
+   var otherLeft = second.style.left;
+   var otherTop = second.style.top;
+   
+   second.style.left = first.style.left;
+   second.style.top = first.style.top;
+   
+   first.style.left = otherLeft;
+   first.style.top = otherTop;
+}
+
 /* mouseGrab(e)
       "Grabs" a puzzle piece using the mousedown action. Sets the value of mousePiece. Calculates
       the value of diffX and diffY. Applies event handlers for mousemove and mouseup events
 */
 function mouseGrab(e) {
    var evt = e|| window.event;
-   mousePiece = evt.target || evt.srcElement;
+   if (mousePiece) {
+	   // swap
+	   var otherPiece = evt.target || evt.srcElement;
+	   
+	   swapPieces(mousePiece, otherPiece);
+	   
+	   mousePiece.classList.remove("selectedPiece");
+	   mousePiece = null;
+   } else {
+	   // select
+	   mousePiece = evt.target || evt.srcElement;
+	   mousePiece.classList.add("selectedPiece");
+   }
+   return;
 
    maxZ ++;
    mousePiece.style.zIndex = maxZ; // Place the piece above other objects
